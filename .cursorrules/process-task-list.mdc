@@ -1,0 +1,119 @@
+# Task List Management
+
+Guidelines for managing task lists in markdown files to track progress on completing a PRD using Test-Driven Development (TDD) with integrated version control.
+
+## TDD Implementation Protocol
+- **Small Red-Green Cycles:** Write tests for ONE behavior, then immediately implement
+- **Focused Testing:** Each test should verify a single, specific functionality
+- **Immediate Implementation:** After writing tests, the next task should implement ONLY what's needed to pass those tests
+- **Git Integration:** Commit after each green phase (successful implementation)
+
+## Task Implementation
+- **One sub-task at a time:** Do **NOT** start the next sub‑task until you ask the user for permission and they say "yes" or "y"
+- **Completion protocol:**  
+  1. When you finish a **sub‑task**, immediately mark it as completed by changing `[ ]` to `[x]`.  
+  2. Show test results when completing test-related tasks
+  3. **For implementation tasks that pass tests:** Run `git add -A && git commit -m "feat: [description of what was implemented]"`
+  4. If **all** subtasks underneath a parent task are now `[x]`, also mark the **parent task** as completed.  
+- Stop after each sub‑task and wait for the user's go‑ahead.
+
+## Task List Maintenance
+
+1. **Update the task list as you work:**
+   - Mark tasks and subtasks as completed (`[x]`) per the protocol above.
+   - Add new tasks as they emerge.
+   - Note test file creation before implementation files
+
+2. **Maintain the "Relevant Files" section:**
+   - List every file created or modified.
+   - Always list test files alongside their implementation files
+   - Give each file a one‑line description of its purpose.
+
+3. **UI Verification (when applicable):**
+   - After implementing UI features, use Playwright to capture screenshots
+   - Verify that UI changes are visible and correct
+   - Include screenshot verification as explicit sub-tasks for UI work
+
+## AI Instructions
+
+When working with task lists, the AI must:
+
+1. **Enforce Small TDD Cycles:**
+   - Each test-writing task should test ONE specific behavior
+   - The immediately following task implements ONLY that behavior
+   - Don't write all tests upfront - work in small increments
+   - Show failing test output before implementing solutions
+   
+2. **Git Workflow:**
+   - After each implementation task where tests pass:
+     ```bash
+     git add -A
+     git commit -m "feat: [what was implemented]"
+     ```
+   - Use conventional commit format:
+     - `feat:` for new features
+     - `test:` for adding tests (if committing test-only changes)
+     - `fix:` for bug fixes
+     - `refactor:` for code improvements
+   - Keep commits atomic - one logical change per commit
+
+3. **UI Development:**
+   - For UI features, include Playwright screenshot capture after implementation
+   - Example code for screenshot:
+     ```javascript
+     const { chromium } = require('playwright');
+     const browser = await chromium.launch();
+     const page = await browser.newPage();
+     await page.goto('http://localhost:3000/relevant-page');
+     await page.screenshot({ path: 'screenshots/feature-name.png' });
+     await browser.close();
+     ```
+   - Review screenshot to ensure UI displays correctly
+
+4. **Implementation Flow:**
+   - Before starting work, identify which specific functionality this sub-task addresses
+   - If writing tests: focus on ONE behavior with clear test descriptions
+   - If implementing: write MINIMAL code to make the current tests pass
+   - After implementation passes tests: COMMIT immediately
+   - Show test output and git commit confirmation
+
+5. **Test Writing Guidelines:**
+   - Write tests for one behavior at a time
+   - Use descriptive test names: "should [expected behavior] when [condition]"
+   - Include the happy path first, then edge cases in subsequent test/implement cycles
+   - Keep tests focused and isolated
+
+## Example Workflow
+
+1. **Test-writing sub-task (1.1):**
+   - AI: "I'll write tests for validating user email format."
+   - [Writes 2-3 focused tests for email validation]
+   - AI: "Tests written for email validation. Running them now..."
+   - [Shows failing tests]
+   - AI: "Task 1.1 complete. Should I implement email validation (task 1.2)?"
+
+2. **Implementation sub-task (1.2):**
+   - AI: "Implementing email validation to pass the tests."
+   - [Implements minimal code]
+   - [Runs tests - all pass]
+   - AI: "All tests passing! Committing changes..."
+   - [Runs git commit]
+   - AI: "Committed: 'feat: add email validation for user profile'. Task 1.2 complete. Should I write tests for phone validation (task 1.3)?"
+
+3. **UI Implementation sub-task:**
+   - AI: "Implementing the profile form component."
+   - [Implements component]
+   - [Runs tests - pass]
+   - AI: "Tests passing. Capturing screenshot to verify UI..."
+   - [Takes screenshot with Playwright]
+   - AI: "Screenshot saved. The form is rendering correctly with all fields visible. Committing..."
+   - [Commits code]
+   - AI: "Task complete. Ready for the next one?"
+
+## Important Reminders
+
+- Work in small increments: test one thing, implement it, commit, repeat
+- Always commit after successful implementations (green phase)
+- For UI work, visually verify with screenshots
+- If tests are still failing after implementation, debug before moving on
+- Keep the task list file updated throughout the process
